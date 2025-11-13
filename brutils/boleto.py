@@ -89,35 +89,35 @@ def is_valid_boleto(boleto: str) -> bool:
 
 
 def generate_boleto() -> str:
-    # 1. Gera os 43 primeiros dígitos aleatórios
-    base = "".join(str(randint(0, 9)) for _ in range(43))
+    # Bloco 1
+    bloco1_base = "".join(str(randint(0, 9)) for _ in range(9))
+    dv1 = modulo10(bloco1_base)
 
-    # 2. Divide a base nos blocos (sem os dígitos verificadores ainda)
-    bloco1 = base[0:9]
-    bloco2 = base[9:19]
-    bloco3 = base[19:29]
-    resto = base[29:43]  # parte usada pro dígito geral
+    # Bloco 2
+    bloco2_base = "".join(str(randint(0, 9)) for _ in range(10))
+    dv2 = modulo10(bloco2_base)
 
-    # 3. Calcula os dígitos verificadores
-    dv1 = modulo10(bloco1)
-    dv2 = modulo10(bloco2)
-    dv3 = modulo10(bloco3)
+    # Bloco 3
+    bloco3_base = "".join(str(randint(0, 9)) for _ in range(10))
+    dv3 = modulo10(bloco3_base)
 
-    # 4. Calcula o dígito geral (módulo 11)
-    # Monta a string pra ele (segue padrão dos boletos: até 4 + resto)
-    resto_num = bloco1[:4] + resto
+    # DV geral (usa parte do número, igual no validador)
+    resto_num = bloco1_base[:4] + bloco3_base + bloco2_base[:3]  # mistura os blocos
     dv_geral = modulo11(resto_num)
 
-    # 5. Junta tudo no formato correto
-    boleto = (
-        bloco1 + str(dv1) +
-        bloco2 + str(dv2) +
-        bloco3 + str(dv3) +
-        str(dv_geral) +
-        resto
-    )
+    # Fator de vencimento + valor (14 dígitos)
+    fator_valor = "".join(str(randint(0, 9)) for _ in range(14))
 
+    # Junta tudo
+    boleto = f"{bloco1_base}{dv1}{bloco2_base}{dv2}{bloco3_base}{dv3}{dv_geral}{fator_valor}"
     return boleto
 
+
+
+if __name__ == "__main__":
+    boleto = generate_boleto()
+    print("Boleto gerado:", boleto)
+    print("Formatado:", display(boleto))
+    print("É válido?", is_valid_boleto(boleto))
 
 
