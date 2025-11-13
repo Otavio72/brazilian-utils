@@ -43,6 +43,14 @@ from brutils.ibge.uf import (
     convert_uf_to_name,
 )
 
+# Boleto Imports
+from brutils.boleto import (
+    is_valid_boleto,
+    format_boleto,
+    display,
+    generate_boleto,
+)
+
 # Legal Nature imports
 from brutils.legal_nature import get_description as get_natureza_legal_nature
 from brutils.legal_nature import is_valid as is_valid_legal_nature
@@ -145,6 +153,11 @@ __all__ = [
     "convert_uf_to_name",
     "get_code_by_municipality_name",
     "get_municipality_by_code",
+    # Boleto
+    "is_valid_boleto",
+    "format_boleto",
+    "display",
+    "generate_boleto",
     # Date Utils
     "is_holiday",
     "convert_date_to_text",

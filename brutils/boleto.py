@@ -96,12 +96,10 @@ def generate_boleto() -> str:
     bloco3_base = "".join(str(randint(0, 9)) for _ in range(10))
     dv3 = modulo10(bloco3_base)
 
+    fator_valor = "".join(str(randint(0, 9)) for _ in range(15))
     
-    resto_num = bloco1_base[:4] + bloco3_base + bloco2_base[:3]  
+    resto_num = bloco1_base[:4] + fator_valor  
     dv_geral = modulo11(resto_num)
-
-    
-    fator_valor = "".join(str(randint(0, 9)) for _ in range(14))
 
     
     boleto = f"{bloco1_base}{dv1}{bloco2_base}{dv2}{bloco3_base}{dv3}{dv_geral}{fator_valor}"
