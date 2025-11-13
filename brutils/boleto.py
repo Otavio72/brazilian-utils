@@ -89,7 +89,35 @@ def is_valid_boleto(boleto: str) -> bool:
 
 
 def generate_boleto() -> str:
-    
+    # 1. Gera os 43 primeiros dígitos aleatórios
+    base = "".join(str(randint(0, 9)) for _ in range(43))
+
+    # 2. Divide a base nos blocos (sem os dígitos verificadores ainda)
+    bloco1 = base[0:9]
+    bloco2 = base[9:19]
+    bloco3 = base[19:29]
+    resto = base[29:43]  # parte usada pro dígito geral
+
+    # 3. Calcula os dígitos verificadores
+    dv1 = modulo10(bloco1)
+    dv2 = modulo10(bloco2)
+    dv3 = modulo10(bloco3)
+
+    # 4. Calcula o dígito geral (módulo 11)
+    # Monta a string pra ele (segue padrão dos boletos: até 4 + resto)
+    resto_num = bloco1[:4] + resto
+    dv_geral = modulo11(resto_num)
+
+    # 5. Junta tudo no formato correto
+    boleto = (
+        bloco1 + str(dv1) +
+        bloco2 + str(dv2) +
+        bloco3 + str(dv3) +
+        str(dv_geral) +
+        resto
+    )
+
+    return boleto
 
 
 
