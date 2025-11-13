@@ -4,14 +4,13 @@ from random import randint
 ############
 
 
-
 def remove_symbols_boleto(boleto: str) -> str:
 
     return "".join(filter(str.isdigit, boleto))
 
 
 def modulo10(numero: str) -> int:
-    """Calcula o dígito verificador de cada bloco (módulo 10)."""
+   
     total = 0
     peso = 2
     for n in reversed(numero):
@@ -23,7 +22,7 @@ def modulo10(numero: str) -> int:
 
 
 def modulo11(numero: str) -> int:
-    """Calcula o dígito verificador geral (módulo 11)."""
+    
     total = 0
     peso = 2
     for n in reversed(numero):
@@ -45,10 +44,6 @@ def display(boleto: str) -> str:
     if not is_valid_boleto(boleto):
         return None
     return "{}.{} {}.{} {}.{} {} {}".format(boleto[:5], boleto[5:10], boleto[10:15], boleto[15:21], boleto[21:26], boleto[26:32], boleto[32:33], boleto[33:])
-
-
-
-    
 
 
 def format_boleto(boleto: str) -> str:
@@ -89,35 +84,25 @@ def is_valid_boleto(boleto: str) -> bool:
 
 
 def generate_boleto() -> str:
-    # Bloco 1
+    
     bloco1_base = "".join(str(randint(0, 9)) for _ in range(9))
     dv1 = modulo10(bloco1_base)
 
-    # Bloco 2
+    
     bloco2_base = "".join(str(randint(0, 9)) for _ in range(10))
     dv2 = modulo10(bloco2_base)
 
-    # Bloco 3
+    
     bloco3_base = "".join(str(randint(0, 9)) for _ in range(10))
     dv3 = modulo10(bloco3_base)
 
-    # DV geral (usa parte do número, igual no validador)
-    resto_num = bloco1_base[:4] + bloco3_base + bloco2_base[:3]  # mistura os blocos
+    
+    resto_num = bloco1_base[:4] + bloco3_base + bloco2_base[:3]  
     dv_geral = modulo11(resto_num)
 
-    # Fator de vencimento + valor (14 dígitos)
+    
     fator_valor = "".join(str(randint(0, 9)) for _ in range(14))
 
-    # Junta tudo
+    
     boleto = f"{bloco1_base}{dv1}{bloco2_base}{dv2}{bloco3_base}{dv3}{dv_geral}{fator_valor}"
     return boleto
-
-
-
-if __name__ == "__main__":
-    boleto = generate_boleto()
-    print("Boleto gerado:", boleto)
-    print("Formatado:", display(boleto))
-    print("É válido?", is_valid_boleto(boleto))
-
-
